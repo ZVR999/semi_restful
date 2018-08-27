@@ -1,21 +1,43 @@
 from flask import Flask, render_template, flash, session, request, redirect
 from mysqlconnection import MySQLConnector
-
-app = Flask(__name__)
-mysql = MySQLConnector(app, 'friendsdb')
-
-# query = 'SELECT * FROM users;'
-# print mysql.query_db(query)
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-app.run(debug=True)
-
+from datetime import datetime
 
 # # # a GET request to /users - calls the index method to display all the users. 
 # # This will need a template.
+
+app = Flask(__name__)
+app.secret_key = 'aconevn23n!r13ndabcnqib2p33'
+mysql = MySQLConnector(app, 'friendsdb')
+
+# Home/Users page
+@app.route('/')
+def index():
+    query = 'SELECT * FROM users;'
+    users = mysql.query_db(query)
+
+    return render_template('index.html', users=users)
+
+# Add a new user page
+@app.route('/add')
+def add():
+    return render_template('add.html')
+
+# Process new user
+@app.route('/create', methods=['POST'])
+def create():
+    return redirect('/')
+
+# Edit a current user page
+@app.route('/edit')
+def edit():
+    return render_template('edit.html')
+
+# Show a current user page
+@app.route('/user')
+def user():
+    return render_template('user.html')
+
+app.run(debug=True)
 
 # # # GET request to /users/new - calls the new method to display a form allowing
 # #  users to create a new user. This will need a template.

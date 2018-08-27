@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,14 @@
     <title>Users</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
+    <!-- Return to Home/Users Page -->
+    <a href="/">Home</a><br><br>
     
     <h1>Users</h1>
-  
+
+    <!-- Table holding all users in the db -->
     <table>
         <tr>
             <th>id</th>
@@ -19,18 +24,21 @@
             <th>Created At</th>
             <th>Actions</th>
         </tr>
-    <!-- {% for user in users %} -->
+        <!-- For loop to list out all users in db -->
+        {% for user in users %}
         <tr>
-            <td>Users ID</td>
-            <td>Users Full Name</td>
-            <td>Users Email</td>
-            <td>When Users are created</td>
-            <td><a href="">Show</a><a href="">Edit</a><a href="">Delete</a></td>
+            <td>{{ user['id'] }}</td>
+            <td>{{ user['first_name'] }} {{ user[last_name] }}</td>
+            <td>{{ user['email'] }}</td>
+            <td>{{ user['created_at'] }}</td>
+            <td><a href="/user">Show</a> <a href="/edit">Edit</a> <a href="">Delete</a></td>
         </tr>
-    
-    <!-- {% endfor %} -->
+        {% endfor %}
+
     </table>
     <br><br>
-    <a href="">Go Back</a>
+    <!-- Link to the add a new user page -->
+    <a href="/add">Add a new user</a>
 </body>
+
 </html>

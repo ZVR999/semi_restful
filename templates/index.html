@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    
+    <h1>Users</h1>
+  
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    <!-- {% for user in users %} -->
+        <tr>
+            <td>Users ID</td>
+            <td>Users Full Name</td>
+            <td>Users Email</td>
+            <td>When Users are created</td>
+            <td><a href="">Show</a><a href="">Edit</a><a href="">Delete</a></td>
+        </tr>
+    
+    <!-- {% endfor %} -->
+    </table>
+    <br><br>
+    <a href="">Go Back</a>
+</body>
+</html>

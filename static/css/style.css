@@ -11,3 +11,7 @@ body{
 h1{
     margin-bottom: 20px;
 }
+
+table, th, td {
+    border: 1px solid black;
+ }

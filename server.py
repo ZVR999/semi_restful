@@ -20,22 +20,96 @@ def index():
 # Add a new user page
 @app.route('/add')
 def add():
-    return render_template('add.html')
+    query = 'SELECT * FROM users;'
+    users = mysql.query_db(query)
+
+    return render_template('add.html', users=users)
+
 
 # Process new user
 @app.route('/create', methods=['POST'])
 def create():
+    # Gather form information 
+    first_name = request.form['first_name']
+    last_name = request.form['last_name']
+    email = request.form['email']
+    # print first_name, last_name, email
+
+    query = 'INSERT INTO users (first_name, last_name, email, created_at, updated_at) VALUES (:first_name, :last_name, :email, now(), now());' 
+    data = {
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': email
+    }   
+    mysql.query_db(query,data)
     return redirect('/')
 
 # Edit a current user page
-@app.route('/edit')
-def edit():
-    return render_template('edit.html')
+@app.route('/<users_id>/edit')
+def edit(users_id):
+    # Query to show which user to edit
+    query = 'SELECT * FROM users WHERE id = :users_id;'
+    data = {
+        'users_id': users_id
+    }
+    user = mysql.query_db(query, data)
+    print user
+    return render_template('edit.html', user=user)
 
-# Show a current user page
-@app.route('/user')
-def user():
-    return render_template('user.html')
+# View/Process changes to current user
+@app.route('/<users_id>', methods=['POST', 'GET'])
+def modify(users_id):
+    # print users_id
+    query = 'SELECT * FROM users WHERE id = :users_id;'
+    data = {
+        'users_id': users_id
+    }
+    user = mysql.query_db(query, data) 
+    created = user[0]['created_at'].strftime('%B %d, %Y')
+
+    if request.form:
+        # Simple validation of data received from form
+        errors = False
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        email = request.form['email']
+
+        if first_name == '':
+            flash('First Name field is empty')
+            errors = True
+        if last_name == '':
+            flash('Last Name field is empty')
+            errors = True
+        if email == '':
+            flash('Email field is empty')
+            errors = True
+        if errors == True:
+            return redirect('/'+users_id+'/edit')
+
+        query = 'UPDATE users SET first_name = :first_name, last_name = :last_name, email = :email WHERE id = :users_id;'
+        data = {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'users_id': users_id
+        }
+        mysql.query_db(query, data)
+        return redirect('/'+users_id)
+    else:
+        return render_template('user.html', user=user, created=created)
+
+@app.route('/<users_id>/destroy')
+def delete(users_id):
+
+    query = 'DELETE FROM users WHERE id = :users_id'
+    data = {
+        'users_id': users_id
+    }
+    mysql.query_db(query,data)
+
+    return redirect('/')
+
+
 
 app.run(debug=True)
 

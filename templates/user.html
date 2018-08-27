@@ -9,10 +9,17 @@
 </head>
 
 <body>
-    <a href="/">Home</a>
-    <a href="/users/new">Add a user</a>
-    <a href="/edit">Edit a user</a>
-    <a href="/user">View a user</a>
+    <a href="/">Home</a><br><br>
+    
+    <h1>User {{ user[0]['id'] }}</h1>
+
+    <div>Full Name: {{ user[0]['first_name'] }} {{ user[0]['last_name'] }} <br>
+        Email: {{ user[0]['email'] }} <br>
+        Created At: {{ created }}
+    </div>
+
+    <a href="{{ user[0]['id'] }}/edit">Edit</a>
+    <a href="/{{ user[0]['id'] }}/destroy">Delete</a>
 
 
 </body>
